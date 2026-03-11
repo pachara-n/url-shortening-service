@@ -77,9 +77,16 @@ app.post("/api/shorten", async (req: Request, res: Response): Promise<any> => {
         }
       } else {
         isUnique = true;
+        
+        const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
+        const shortUrl = `${baseUrl}/${data.short_code}`;
+
         return res.status(201).json({
           message: "URL shortened successfully",
-          data: data
+          data: {
+            ...data,
+            short_url: shortUrl
+          }
         });
       }
     }
