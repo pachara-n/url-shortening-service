@@ -101,12 +101,101 @@ app.post("/api/shorten", async (req: Request, res: Response): Promise<any> => {
   }
 });
 
+app.get("/shorten/:code", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { code } = req.params;
+    const { data, error } = await supabase
+      .from("urls")
+      .select("short_code, original_url, created_at, updated_at")
+      .eq("short_code", code)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    return res.status(200).json({ data });
+  } catch (error: any) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.put("/shorten/:code", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { code } = req.params;
+    const { url } = req.body;
+
+    if (!url) return res.status(400).json({ error: "URL is required" });
+
+    try {
+      new URL(url);
+    } catch (_) {
+      return res.status(400).json({ error: "Invalid URL format" });
+    }
+
+    const { data, error } = await supabase
+      .from("urls")
+      .update({ original_url: url, updated_at: new Date().toISOString() })
+      .eq("short_code", code)
+      .select()
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    return res.status(200).json({ data });
+  } catch (error: any) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.delete("/shorten/:code", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { code } = req.params;
+
+    const { error, count } = await supabase
+      .from("urls")
+      .delete({ count: "exact" })
+      .eq("short_code", code);
+
+    if (error) throw error;
+    if (count === 0) return res.status(404).json({ error: "Short URL not found" });
+
+    // 204 No Content คือมาตรฐาน REST สำหรับการลบสำเร็จ ไม่ต้องส่ง body กลับ
+    return res.status(204).send();
+  } catch (error: any) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/shorten/:code/stats", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { code } = req.params;
+
+    const { data, error } = await supabase
+      .from("urls")
+      .select("short_code, clicks, last_visited, created_at")
+      .eq("short_code", code)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ error: "Short URL not found" });
+    }
+
+    return res.status(200).json({ data });
+  } catch (error: any) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Redirect route ต้องอยู่ล่างสุดเสมอ เพราะ /:code จะ match ทุก path ที่ไม่มี prefix
 app.get("/:code", async (req: Request, res: Response): Promise<any> => {
   try {
     const { code } = req.params;
 
-    // ป้องกันไม่ให้ Express ตีความคำว่า api หรือ test-db เป็นรหัสย่อ (Collision บน Route)
-    if (code === "test-db" || code === "api") return;
+    // ป้องกัน Express ไม่ให้ตีความ path ของ API เป็นรหัสย่อ
+    if (code === "test-db" || code === "api" || code === "shorten") return;
 
     const { data, error } = await supabase
       .from("urls")
