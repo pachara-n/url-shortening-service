@@ -10,5 +10,5 @@ if (!supabaseUrl || !supabaseKey) {
   throw new Error('Missing Supabase environment variables.');
 }
 
-// Instantiate a single client to be shared across the app, ensuring we don't open redundant connections.
+// สร้าง Singleton Client เพื่อให้เรียกใช้ซ้ำได้ทั้งแอป ประหยัด Connection
 export const supabase = createClient(supabaseUrl, supabaseKey);
