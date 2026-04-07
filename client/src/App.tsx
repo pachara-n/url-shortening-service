@@ -53,7 +53,10 @@ function App() {
   return (
     <div className="bg-surface grid-bg font-sans text-on-surface min-h-screen flex flex-col relative w-full overflow-x-hidden">
       <main className="max-w-7xl mx-auto px-8 pt-24 md:pt-32 pb-20 flex flex-col md:flex-row items-center gap-16 md:gap-24 lg:gap-32 w-full flex-1">
-        {/* Left Side: Content */}
+        {/* Left Side: Visual Scene */}
+        <VisualScene />
+
+        {/* Right Side: Content */}
         <div className="flex-1 space-y-8 z-10 w-full">
           <Hero />
 
@@ -106,9 +109,6 @@ function App() {
             </p>
           </div>
         </div>
-
-        {/* Right Side: Visual Scene */}
-        <VisualScene />
       </main>
 
       <footer className="w-full py-12 opacity-40">

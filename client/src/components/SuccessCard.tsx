@@ -8,8 +8,11 @@ interface SuccessCardProps {
 
 export function SuccessCard({ shortUrl, copyToClipboard, isCopied }: SuccessCardProps) {
   return (
-    <div className="mt-8 bg-surface-container-lowest/95 backdrop-blur-xl px-6 py-5 rounded-2xl shadow-[0_24px_48px_rgba(79,70,229,0.1)] border border-primary/20 flex flex-col gap-4 animate-in slide-in-from-top-4 fade-in duration-500">
-      <div className="flex items-center gap-2">
+    <div className="mt-8 bg-white/40 backdrop-blur-2xl px-6 py-5 rounded-3xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] border border-white/60 flex flex-col gap-4 animate-in slide-in-from-top-4 fade-in duration-500 relative overflow-hidden group">
+      {/* Decorative Shine Effect */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+      
+      <div className="flex items-center gap-2 relative z-10">
         <div className="flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30">
           <FiCheck className="w-3 h-3" strokeWidth={4} />
         </div>

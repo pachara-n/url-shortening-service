@@ -17,6 +17,12 @@ export function VisualScene() {
       <div className="absolute w-full h-full max-w-[600px] max-h-[600px] rounded-full bg-primary/5 blur-[120px] animate-pulse"></div>
       <div className="absolute w-[600px] h-[600px] rounded-full border border-primary/5 animate-[pulse_8s_ease-in-out_infinite_-2s] opacity-5"></div>
 
+      {/* Data Nodes (Step 3: Static Background Elements - Repositioned to avoid overlap) */}
+      <div className="absolute -top-10 -right-20 w-3 h-3 bg-primary/20 rounded-full blur-sm"></div>
+      <div className="absolute -bottom-20 -left-20 w-2 h-2 bg-primary/40 rounded-full blur-[2px]"></div>
+      <div className="absolute top-40 -left-32 w-4 h-4 bg-primary/10 rounded-full blur-md"></div>
+      <div className="absolute -top-32 left-10 w-2 h-2 bg-primary/30 rounded-full blur-[1px]"></div>
+
       {/* Main 3D Sphere Container */}
       <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float flex items-center justify-center">
         <svg
@@ -82,8 +88,8 @@ export function VisualScene() {
           <FiLink strokeWidth={1} />
         </div>
 
-        {/* Permanent Floating Mockup Card (Top Right) */}
-        <div className="absolute -top-12 -right-16 bg-white/90 backdrop-blur-xl px-4 py-3 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] border border-white flex flex-col gap-2 z-20 transform rotate-6 hover:rotate-0 transition-all duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
+        {/* Permanent Floating Mockup Card (Top Left - Flipped Rotation) */}
+        <div className="absolute -top-12 -left-16 bg-white/90 backdrop-blur-xl px-4 py-3 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] border border-white flex flex-col gap-2 z-20 transform -rotate-6 hover:rotate-0 transition-all duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
           <div className="flex items-center gap-2">
             <div className="flex bg-primary/10 text-primary p-1 rounded-md">
               <FiLink className="w-3 h-3" strokeWidth={3} />
@@ -95,8 +101,8 @@ export function VisualScene() {
         </div>
       </div>
 
-      {/* Floating QR Code (Bottom Left) */}
-      <div className="absolute -bottom-8 -left-12 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] z-20 transform -rotate-12 hover:rotate-0 transition-all duration-700 border border-white animate-[float_8s_ease-in-out_infinite_-3s]">
+      {/* Floating QR Code (Bottom Right - Flipped Rotation) */}
+      <div className="absolute -bottom-8 -right-12 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] z-20 transform rotate-6 hover:rotate-0 transition-all duration-700 border border-white animate-[float_8s_ease-in-out_infinite_-3s]">
         <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center p-1.5 opacity-90">
           <svg viewBox="0 0 100 100" className="w-full h-full fill-primary">
             {/* QR Finder Patterns */}
