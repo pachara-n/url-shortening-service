@@ -8,7 +8,11 @@ interface SuccessCardProps {
   isCopied: boolean;
 }
 
-export function SuccessCard({ shortUrl, copyToClipboard, isCopied }: SuccessCardProps) {
+export function SuccessCard({
+  shortUrl,
+  copyToClipboard,
+  isCopied,
+}: SuccessCardProps) {
   const qrRef = useRef<HTMLDivElement>(null);
 
   const downloadQR = () => {
@@ -25,78 +29,75 @@ export function SuccessCard({ shortUrl, copyToClipboard, isCopied }: SuccessCard
   };
 
   return (
-    <div className="mt-8 bg-surface-container-lowest/80 backdrop-blur-3xl px-6 py-6 rounded-[2.5rem] shadow-[0_32px_64px_rgba(5,150,105,0.12)] border border-outline-variant/20 flex flex-col sm:flex-row items-center gap-8 animate-in slide-in-from-top-6 fade-in duration-700 relative overflow-hidden group">
-      {/* Glow highlight */}
-      <div className="absolute -top-12 -left-12 w-32 h-32 bg-primary/10 rounded-full blur-[60px]"></div>
-      
-      {/* Left Content: Info & Buttons */}
-      <div className="flex-1 flex flex-col gap-5 w-full z-10">
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-on-primary">
-            <FiCheck className="w-3.5 h-3.5" strokeWidth={4} />
+    <div className="mt-6 bg-gradient-to-r from-emerald-50/50 to-emerald-100/50 rounded-2xl border border-emerald-100 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 w-full max-w-2xl mx-auto shadow-sm">
+      {/* Header Segment */}
+      <div className="flex items-center gap-2 px-5 pt-4 pb-3">
+        <div className="w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center shrink-0">
+          <FiCheck className="w-3 h-3 text-white" strokeWidth={4} />
+        </div>
+        <span className="text-sm font-semibold text-emerald-900">Your link is ready!</span>
+      </div>
+
+      {/* Main Body Segment */}
+      <div className="flex items-stretch gap-0 px-4 pb-4">
+        {/* Left Action Area */}
+        <div className="flex-1 flex flex-col gap-3 min-w-0">
+          {/* Link Display Box */}
+          <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2.5 border border-emerald-100 shadow-sm group/input transition-all hover:border-emerald-300">
+            <FiLink className="text-emerald-500 shrink-0 w-4 h-4" />
+            <span className="font-mono text-sm font-semibold text-emerald-700 flex-1 truncate select-all">
+              {shortUrl}
+            </span>
           </div>
-          <span className="text-sm font-bold text-on-surface">Your link is ready!</span>
+
+          {/* Action Buttons Group */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={copyToClipboard}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-xs font-bold rounded-xl transition-all duration-200 transform active:scale-95 ${
+                isCopied
+                  ? "bg-emerald-200 text-emerald-800 shadow-inner"
+                  : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/10"
+              }`}
+            >
+              {isCopied ? <FiCheck className="w-4 h-4" /> : <FiCopy className="w-4 h-4" />}
+              {isCopied ? "Copied" : "Copy link"}
+            </button>
+            <button
+              onClick={downloadQR}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 text-xs font-bold rounded-xl bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 transition-all duration-200 shadow-sm"
+            >
+              <FiDownload className="w-4 h-4" />
+              Download QR
+            </button>
+          </div>
         </div>
 
-        <div className="bg-surface p-1 rounded-2xl border border-outline-variant/10 flex items-center justify-between overflow-hidden shadow-inner group/input">
-           <div className="p-3 text-primary/40 bg-surface-container-low rounded-xl ml-1">
-             <FiLink className="w-4 h-4" />
-           </div>
-           <span className="flex-1 font-mono text-primary font-bold text-sm truncate px-4 select-all">
-             {shortUrl}
-           </span>
-        </div>
+        {/* Divider Line */}
+        <div className="w-px bg-emerald-200/50 mx-4 self-stretch hidden sm:block"></div>
 
-        <div className="flex flex-col md:flex-row items-center gap-3 w-full">
-          <button 
-            onClick={copyToClipboard}
-            className={`flex-1 w-full px-6 py-4 rounded-2xl font-bold flex items-center justify-center gap-2.5 transition-all duration-300 transform active:scale-95 shadow-lg ${
-              isCopied 
-                ? 'bg-[#A7F3D0] text-[#064E3B] shadow-emerald-200' // เขียวอ่อนแบบ Wrapp เมื่่อ Copy แล้ว
-                : 'bg-primary text-on-primary hover:bg-primary/90 shadow-primary/20'
-            }`}
+        {/* Right QR Visualization Area */}
+        <div className="shrink-0 flex items-center justify-center hidden sm:flex">
+          <div
+            className="p-1.5 rounded-xl bg-white border-2 border-emerald-100 shadow-sm transition-transform hover:scale-110 duration-300"
+            ref={qrRef}
           >
-            {isCopied ? <FiCheck className="w-5 h-5 animate-in zoom-in" /> : <FiCopy className="w-5 h-5" />}
-            {isCopied ? 'Copied!' : 'Copy link'}
-          </button>
-
-          <button 
-            onClick={downloadQR}
-            className="flex-1 w-full px-6 py-4 rounded-2xl font-bold flex items-center justify-center gap-2.5 border-2 border-on-surface/5 hover:bg-on-surface/[0.03] transition-all transform active:scale-95 text-on-surface"
-          >
-            <FiDownload className="w-5 h-5" />
-            Download QR
-          </button>
+            <QRCodeCanvas 
+              value={shortUrl} 
+              size={80} 
+              level="H" 
+              className="rounded-md" 
+            />
+          </div>
         </div>
       </div>
-
-      {/* Vertical Divider */}
-      <div className="hidden sm:block w-[1.5px] h-32 bg-outline-variant/10 shrink-0"></div>
-
-      {/* Right Content: QR Code */}
-      <div className="w-full sm:w-auto p-4 bg-white rounded-3xl border border-outline-variant/10 shadow-sm transition-transform duration-500 hover:scale-105 z-10" ref={qrRef}>
-        <QRCodeCanvas
-          value={shortUrl}
-          size={120}
-          level={"H"}
-          includeMargin={false}
-          imageSettings={{
-            src: "",
-            x: undefined,
-            y: undefined,
-            height: 24,
-            width: 24,
-            excavate: true,
-          }}
-          className="rounded-lg"
-        />
-      </div>
-
-      <div className="absolute bottom-4 left-6">
-         <p className="text-[10px] text-outline/40 font-mono font-bold tracking-tighter uppercase">
-            No registration required <span className="mx-1">•</span> 100% Free
+      
+      {/* Optional Metadata Row */}
+      {/* <div className="bg-emerald-500/5 px-5 py-2 border-t border-emerald-100/50">
+         <p className="text-[9px] uppercase tracking-widest font-bold text-emerald-800/40 text-center sm:text-left">
+           Instant URL Shortening <span className="mx-1">•</span> No registration required
          </p>
-      </div>
+      </div> */}
     </div>
   );
 }
