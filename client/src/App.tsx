@@ -54,14 +54,14 @@ function App() {
     <div className="bg-surface grid-bg font-sans text-on-surface h-screen overflow-hidden flex flex-col relative w-full">
       <main className="min-h-screen pt-32 pb-20 px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-96 h-full flex-1">
         {/* Left Side: Content */}
-        <div className="flex-[1.5] shrink-0 space-y-8 z-10 w-full max-w-4xl px-4 md:px-0">
+        <div className="flex-3 shrink-0 space-y-8 z-10 w-full px-4 md:px-0">
           <div className="space-y-4">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter text-on-surface leading-tight md:leading-[1.1]">
               Shorten links.
               <br />
               <span className="text-primary bg-clip-text">Amplify reach.</span>
             </h1>
-            <p className="text-slate-500 text-base md:text-lg max-w-md leading-relaxed font-medium">
+            <p className="text-slate-500 text-base md:text-lg max-w-4xl leading-relaxed font-medium">
               Transform complex URLs into sleek, trackable assets designed for
               modern digital architectures.
             </p>
@@ -117,29 +117,11 @@ function App() {
             )}
           </div>
 
-          <div className="flex gap-6 items-center pt-8">
-            <div className="flex items-center gap-2">
-              <span
-                className="material-symbols-outlined text-primary text-sm"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                check_circle
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">
-                Real-time Analytics
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span
-                className="material-symbols-outlined text-primary text-sm"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                check_circle
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">
-                Custom Domains
-              </span>
-            </div>
+          <div className="flex items-center gap-2 pt-2  ">
+            <div className="w-2 h-2 rounded-full bg-primary/40 animate-pulse"></div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-bold leading-relaxed whitespace-nowrap">
+              Zero registration. <span className="text-primary/40 mx-1">/</span> Instant shortening. <span className="text-primary/40 mx-1">/</span> Permanent link access.
+            </p>
           </div>
         </div>
 
