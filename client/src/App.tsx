@@ -133,8 +133,9 @@ function App() {
           <div className="absolute w-[400px] h-[400px] rounded-full border border-primary/10 animate-[pulse_4s_ease-in-out_infinite] opacity-10"></div>
 
           {/* Main 3D Sphere Container */}
-          <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float">
-            <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_32px_64px_rgba(79,70,229,0.4)]">
+          <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float flex items-center justify-center">
+            <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full drop-shadow-[0_32px_64px_rgba(79,70,229,0.4)]">
+              {/* SVG Content (Gradients and Mesh) */}
               <defs>
                 <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
                   <stop offset="0%" stopColor="#818CF8" />
@@ -147,20 +148,18 @@ function App() {
                 </radialGradient>
               </defs>
               
-              {/* The Base Sphere */}
               <circle cx="100" cy="100" r="90" fill="url(#sphereGrad)" />
-              
-              {/* Mesh / Grid Lines (Vertical) */}
               <ellipse cx="100" cy="100" rx="40" ry="90" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" />
               <ellipse cx="100" cy="100" rx="15" ry="90" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
-              
-              {/* Mesh / Grid Lines (Horizontal) */}
               <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" />
               <ellipse cx="100" cy="100" rx="90" ry="10" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
-
-              {/* Surface Gloss Overlay */}
               <circle cx="100" cy="100" r="90" fill="url(#surfaceGlow)" />
             </svg>
+
+            {/* Centered Link Icon (Forced Scale) */}
+            <span className="material-symbols-outlined text-surface drop-shadow-2xl z-10 opacity-60 scale-[2.2] lg:scale-[2.8] select-none pointer-events-none" style={{ fontVariationSettings: "'wght' 100" }}>
+              link
+            </span>
 
             {/* Floating Link Created Popup */}
             {shortUrl && (
