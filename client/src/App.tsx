@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiLink, FiArrowRight, FiCopy, FiCheck, FiAlertCircle } from "react-icons/fi";
+import { FiLink, FiArrowRight, FiAlertCircle } from "react-icons/fi";
 import { Hero } from "./components/Hero";
 import { VisualScene } from "./components/VisualScene";
 import { SuccessCard } from "./components/SuccessCard";
