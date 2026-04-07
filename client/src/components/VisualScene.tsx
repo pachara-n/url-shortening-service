@@ -3,24 +3,26 @@ import { FiLink } from "react-icons/fi";
 export function VisualScene() {
   return (
     <div className="hidden md:flex flex-1 relative w-full aspect-square md:aspect-auto items-center justify-center -mt-10 md:mt-0">
-      
-      {/* 1. Optimized Static Supporting Rings */}
+      {/* Optimized Static Supporting Rings */}
       <div className="absolute w-[280px] h-[280px] rounded-full border border-primary/10 opacity-40"></div>
       <div className="absolute w-[360px] h-[360px] rounded-full border border-primary/5 opacity-30"></div>
       <div className="absolute w-[460px] h-[460px] rounded-full border border-primary/5 opacity-20"></div>
 
-      {/* 2. Gentle Ripple Waves (Smaller & Slower) */}
+      {/* Gentle Ripple Waves (Smaller & Slower) */}
       <div className="absolute w-64 h-64 rounded-full border-2 border-primary/15 animate-ripple"></div>
       <div className="absolute w-64 h-64 rounded-full border-2 border-primary/10 animate-ripple [animation-delay:1.5s]"></div>
       <div className="absolute w-64 h-64 rounded-full border-2 border-primary/5 animate-ripple [animation-delay:3s]"></div>
-      
-      {/* 3. Deep Background Glow Atmos */}
+
+      {/* Deep Background Glow Atmos */}
       <div className="absolute w-full h-full max-w-[600px] max-h-[600px] rounded-full bg-primary/5 blur-[120px] animate-pulse"></div>
       <div className="absolute w-[600px] h-[600px] rounded-full border border-primary/5 animate-[pulse_8s_ease-in-out_infinite_-2s] opacity-5"></div>
 
       {/* Main 3D Sphere Container */}
       <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float flex items-center justify-center">
-        <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full drop-shadow-[0_32px_64px_rgba(79,70,229,0.4)]">
+        <svg
+          viewBox="0 0 200 200"
+          className="absolute inset-0 w-full h-full drop-shadow-[0_32px_64px_rgba(79,70,229,0.4)]"
+        >
           <defs>
             <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
               <stop offset="0%" stopColor="#818CF8" />
@@ -33,10 +35,46 @@ export function VisualScene() {
             </radialGradient>
           </defs>
           <circle cx="100" cy="100" r="90" fill="url(#sphereGrad)" />
-          <ellipse cx="100" cy="100" rx="40" ry="90" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" />
-          <ellipse cx="100" cy="100" rx="15" ry="90" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
-          <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" />
-          <ellipse cx="100" cy="100" rx="90" ry="10" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
+          <ellipse
+            cx="100"
+            cy="100"
+            rx="40"
+            ry="90"
+            fill="none"
+            stroke="white"
+            strokeWidth="0.5"
+            strokeOpacity="0.2"
+          />
+          <ellipse
+            cx="100"
+            cy="100"
+            rx="15"
+            ry="90"
+            fill="none"
+            stroke="white"
+            strokeWidth="0.5"
+            strokeOpacity="0.15"
+          />
+          <ellipse
+            cx="100"
+            cy="100"
+            rx="90"
+            ry="30"
+            fill="none"
+            stroke="white"
+            strokeWidth="0.5"
+            strokeOpacity="0.2"
+          />
+          <ellipse
+            cx="100"
+            cy="100"
+            rx="90"
+            ry="10"
+            fill="none"
+            stroke="white"
+            strokeWidth="0.5"
+            strokeOpacity="0.15"
+          />
           <circle cx="100" cy="100" r="90" fill="url(#surfaceGlow)" />
         </svg>
 
@@ -50,11 +88,13 @@ export function VisualScene() {
             <div className="flex bg-primary/10 text-primary p-1 rounded-md">
               <FiLink className="w-3 h-3" strokeWidth={3} />
             </div>
-            <span className="font-mono text-primary font-bold text-[10px] tracking-wide">s.pachara.app/qwerty</span>
+            <span className="font-mono text-primary font-bold text-[10px] tracking-wide">
+              s.pachara.app/qwerty
+            </span>
           </div>
         </div>
       </div>
-      
+
       {/* Floating QR Code (Bottom Left) */}
       <div className="absolute -bottom-8 -left-12 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] z-20 transform -rotate-12 hover:rotate-0 transition-all duration-700 border border-white animate-[float_8s_ease-in-out_infinite_-3s]">
         <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center p-1.5 opacity-90">
@@ -76,7 +116,9 @@ export function VisualScene() {
           </svg>
         </div>
         <div className="mt-2 text-center">
-          <span className="font-mono text-[8px] uppercase tracking-widest text-outline font-bold">QR Code</span>
+          <span className="font-mono text-[8px] uppercase tracking-widest text-outline font-bold">
+            QR Code
+          </span>
         </div>
       </div>
 

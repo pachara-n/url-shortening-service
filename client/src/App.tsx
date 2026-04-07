@@ -21,7 +21,8 @@ function App() {
     setIsCopied(false);
 
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+      const baseUrl =
+        import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
       const response = await fetch(`${baseUrl}/api/shorten`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -29,7 +30,8 @@ function App() {
       });
 
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Failed to shorten URL");
+      if (!response.ok)
+        throw new Error(result.error || "Failed to shorten URL");
 
       setShortUrl(result.data.short_url);
       setUrl("");
@@ -51,7 +53,6 @@ function App() {
   return (
     <div className="bg-surface grid-bg font-sans text-on-surface min-h-screen flex flex-col relative w-full overflow-x-hidden">
       <main className="max-w-7xl mx-auto px-8 pt-24 md:pt-32 pb-20 flex flex-col md:flex-row items-center gap-16 md:gap-24 lg:gap-32 w-full flex-1">
-        
         {/* Left Side: Content */}
         <div className="flex-1 space-y-8 z-10 w-full">
           <Hero />
@@ -90,25 +91,24 @@ function App() {
 
             {/* Success Card Component */}
             {shortUrl && (
-              <SuccessCard 
-                shortUrl={shortUrl} 
-                copyToClipboard={copyToClipboard} 
-                isCopied={isCopied} 
+              <SuccessCard
+                shortUrl={shortUrl}
+                copyToClipboard={copyToClipboard}
+                isCopied={isCopied}
               />
             )}
           </div>
 
-          <div className="flex items-center gap-3 pt-6">
-            <div className="w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse"></div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant/50 font-bold">
-              Secure Cloud Infrastructure <span className="mx-2 opacity-30">•</span> 2026 Edition
+          <div className="flex items-center gap-2 pt-2  ">
+            <div className="w-2 h-2 rounded-full bg-primary/40 animate-pulse"></div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-bold leading-relaxed whitespace-nowrap">
+              Zero registration. <span className="text-primary/40 mx-1">/</span> Instant shortening. <span className="text-primary/40 mx-1">/</span> Permanent link access.
             </p>
           </div>
         </div>
 
         {/* Right Side: Visual Scene */}
         <VisualScene />
-
       </main>
 
       <footer className="w-full py-12 opacity-40">
