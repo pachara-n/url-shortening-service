@@ -98,6 +98,36 @@ function App() {
                 {error}
               </div>
             )}
+            
+            {/* Success Result Box (Moved beneath input form) */}
+            {shortUrl && (
+              <div className="mt-6 bg-surface-container-lowest/90 backdrop-blur-xl px-6 py-5 rounded-2xl shadow-[0_8px_32px_rgba(79,70,229,0.08)] border border-outline-variant/30 flex flex-col gap-4 z-20 animate-in slide-in-from-top-4 fade-in duration-500">
+                <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-2">
+                      <div className="flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white">
+                        <FiCheck className="w-3.5 h-3.5" strokeWidth={3} />
+                      </div>
+                      <span className="font-sans text-sm text-on-surface font-bold">Your link is ready!</span>
+                   </div>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                  <div className="flex-1 w-full bg-surface-container-low/50 p-3 rounded-xl border border-outline-variant/20 flex items-center justify-between">
+                    <div className="flex items-center gap-2 overflow-hidden">
+                       <FiLink className="w-4 h-4 text-primary shrink-0" />
+                       <span className="font-mono text-primary font-bold text-sm truncate select-all">{shortUrl}</span>
+                    </div>
+                  </div>
+                  <button 
+                    className={`w-full sm:w-auto px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all duration-150 ${isCopied ? 'bg-green-100 text-green-700' : 'bg-primary text-on-primary hover:bg-[#3430a3] hover:shadow-lg hover:shadow-primary/20 active:scale-95'}`} 
+                    onClick={copyToClipboard}
+                  >
+                    {isCopied ? <FiCheck className="w-4 h-4" /> : <FiCopy className="w-4 h-4" />}
+                    {isCopied ? 'Copied!' : 'Copy link'}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2 pt-2">
@@ -144,24 +174,15 @@ function App() {
                <FiLink strokeWidth={1} />
             </div>
 
-            {/* Floating Link Created Popup (Shifted further away) */}
-            {shortUrl && (
-              <div className="absolute -top-16 -right-24 bg-surface-container-lowest/90 backdrop-blur-xl px-5 py-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.2)] border border-white/40 flex flex-col gap-2 z-20 animate-in zoom-in-50 duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant font-bold">Success!</span>
-                </div>
-                <div className="flex items-center gap-3 bg-surface-container-low/50 p-2 rounded-lg border border-outline-variant/20">
-                  <span className="font-mono text-primary font-bold text-xs select-all">{shortUrl}</span>
-                  <button 
-                    className={`p-1.5 rounded-md transition-all ${isCopied ? 'bg-green-100 text-green-600' : 'bg-white text-outline hover:text-primary'}`} 
-                    onClick={copyToClipboard}
-                  >
-                    {isCopied ? <FiCheck className="w-3.5 h-3.5" /> : <FiCopy className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
+            {/* Permanent Floating Mockup Card (Top Right) */}
+            <div className="absolute -top-12 -right-16 bg-white/90 backdrop-blur-xl px-4 py-3 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] border border-white flex flex-col gap-2 z-20 transform rotate-6 hover:rotate-0 transition-all duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
+              <div className="flex items-center gap-2">
+                 <div className="flex bg-primary/10 text-primary p-1 rounded-md">
+                    <FiLink className="w-3 h-3" strokeWidth={3} />
+                 </div>
+                 <span className="font-mono text-primary font-bold text-[10px] tracking-wide">s.pachara.app/qwerty</span>
               </div>
-            )}
+            </div>
           </div>
           
           {/* Floating QR Code (Bottom Left - more distance) */}
@@ -198,9 +219,9 @@ function App() {
 
       {/* Footer */}
       <footer className="w-full absolute bottom-0 left-0 py-8 pointer-events-none z-10">
-        <div className="max-w-7xl mx-auto px-8 flex justify-center items-center">
+        <div className="max-w-7xl mx-auto px-8 flex justify-center items-center text-center">
           <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-400">
-            © 2026 Streamline Architecture. All rights reserved.
+            © 2026 Developed by Pachara Nokroy.
           </div>
         </div>
       </footer>
