@@ -3,3 +3,7 @@ node_modules/
 dist/
 .DS_Store
 .vscode/
+
+DESIGN.md
+download.js
+stitch_ui.html
