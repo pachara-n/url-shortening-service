@@ -95,7 +95,7 @@ export function VisualScene() {
               <FiLink className="w-3 h-3" strokeWidth={3} />
             </div>
             <span className="font-mono text-primary font-bold text-[10px] tracking-wide">
-              s.pachara.app/qwerty
+              short.pachara.app/qwerty
             </span>
           </div>
         </div>
