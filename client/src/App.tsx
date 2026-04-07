@@ -145,72 +145,77 @@ function App() {
 
         {/* Right Side: Visuals */}
         <div className="hidden md:flex flex-1 relative w-full aspect-square md:aspect-auto items-center justify-center -mt-10 md:mt-0">
-          {/* Main 3D Sphere */}
-          <div className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-full bg-gradient-to-br from-primary to-[#0a006b] shadow-[0_64px_128px_rgba(79,70,229,0.3)] flex items-center justify-center animate-float">
-            <div className="absolute inset-0 rounded-full border-[16px] border-white/10 blur-sm"></div>
-            <span
-              className="material-symbols-outlined text-surface text-8xl lg:text-9xl drop-shadow-2xl"
-              style={{ fontVariationSettings: "'wght' 200" }}
-            >
-              link
-            </span>
-            {/* Inner Gloss Overlay */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent to-white/20 pointer-events-none"></div>
+          
+          {/* Sonar Pulse Ring */}
+          <div className="absolute w-80 h-80 rounded-full border-2 border-primary/20 animate-ping opacity-20"></div>
+          <div className="absolute w-[400px] h-[400px] rounded-full border border-primary/10 animate-[pulse_4s_ease-in-out_infinite] opacity-10"></div>
+
+          {/* Main 3D Sphere Container */}
+          <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float">
+            <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-[0_32px_64px_rgba(79,70,229,0.4)]">
+              <defs>
+                <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
+                  <stop offset="0%" stopColor="#818CF8" />
+                  <stop offset="40%" stopColor="#4F46E5" />
+                  <stop offset="100%" stopColor="#1E1B4B" />
+                </radialGradient>
+                <radialGradient id="surfaceGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="white" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="white" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+              
+              {/* The Base Sphere */}
+              <circle cx="100" cy="100" r="90" fill="url(#sphereGrad)" />
+              
+              {/* Mesh / Grid Lines (Vertical) */}
+              <ellipse cx="100" cy="100" rx="40" ry="90" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" />
+              <ellipse cx="100" cy="100" rx="15" ry="90" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
+              
+              {/* Mesh / Grid Lines (Horizontal) */}
+              <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.2" />
+              <ellipse cx="100" cy="100" rx="90" ry="10" fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.15" />
+
+              {/* Surface Gloss Overlay */}
+              <circle cx="100" cy="100" r="90" fill="url(#surfaceGlow)" />
+            </svg>
+
+            {/* Floating Link Created Popup */}
+            {shortUrl && (
+              <div className="absolute -top-12 -right-12 bg-surface-container-lowest/90 backdrop-blur-xl px-5 py-4 rounded-2xl shadow-[0_24px_48px_rgba(79,70,229,0.15)] border border-white/40 flex flex-col gap-2 z-10 animate-in zoom-in-50 duration-500">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant font-bold">Success!</span>
+                </div>
+                <div className="flex items-center gap-3 bg-surface-container-low/50 p-2 rounded-lg border border-outline-variant/20">
+                  <span className="font-mono text-primary font-bold text-xs select-all">{shortUrl}</span>
+                  <button 
+                    className={`p-1.5 rounded-md transition-all ${isCopied ? 'bg-green-100 text-green-600' : 'bg-white text-outline hover:text-primary'}`} 
+                    onClick={copyToClipboard}
+                  >
+                    <span className="material-symbols-outlined text-xs">{isCopied ? 'check' : 'content_copy'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-
-          {/* Floating Link Created Popup */}
-          {shortUrl && (
-            <div className="absolute top-0 lg:-top-10 right-0 lg:right-10 bg-surface-container-lowest backdrop-blur-xl px-6 py-5 rounded-xl shadow-[0_24px_48px_rgba(79,70,229,0.12)] border border-white/50 flex flex-col gap-2 z-10 animate-in zoom-in-95 duration-300">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">
-                  Link created!
-                </span>
-              </div>
-              <div className="flex items-center gap-4 bg-surface-container-low p-2 px-3 rounded-lg border border-outline-variant/30">
-                <span className="font-mono text-primary font-bold text-sm select-all">
-                  {shortUrl}
-                </span>
-                <button
-                  className={`flex items-center justify-center w-8 h-8 rounded-md transition-all ${isCopied ? "bg-green-100 text-green-600" : "bg-white hover:bg-primary/10 text-outline hover:text-primary shadow-sm"}`}
-                  onClick={copyToClipboard}
-                  title="Copy to clipboard"
-                >
-                  <span className="material-symbols-outlined text-sm">
-                    {isCopied ? "check" : "content_copy"}
-                  </span>
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Floating QR Code */}
-          <div className="absolute bottom-10 lg:bottom-0 left-0 lg:left-10 bg-white p-4 rounded-2xl shadow-[0_24px_48px_rgba(79,70,229,0.06)] z-10 transform -rotate-6 hover:rotate-0 hover:scale-105 transition-all duration-300">
-            <div className="w-20 h-20 lg:w-24 lg:h-24 bg-on-surface/5 rounded-lg flex items-center justify-center relative overflow-hidden group">
+          
+          {/* Floating QR Code (Bottom Left) */}
+          <div className="absolute -bottom-4 left-4 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-[0_24px_48px_rgba(79,70,229,0.1)] z-10 transform -rotate-6 hover:rotate-0 transition-all duration-500 border border-white">
+            <div className="w-16 h-16 lg:w-20 lg:h-20 bg-on-surface/5 rounded-xl flex items-center justify-center overflow-hidden">
               {shortUrl ? (
-                // Realistic QR if available
-                <img
-                  alt="QR Code Active"
-                  className="w-[90%] h-[90%] opacity-100 mix-blend-multiply"
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${shortUrl}&color=0f172a`}
-                />
+                <img alt="QR" className="w-[85%] h-[85%]" src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${shortUrl}&color=4f46e5`} />
               ) : (
-                <img
-                  alt="QR Code"
-                  className="w-[90%] h-[90%] opacity-40 mix-blend-luminosity group-hover:opacity-60 transition-opacity"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmhFmHbWqYk0XDGQsDr2g__xBdfKYmsqpGwmbf67wJJbnenfZ_1bLqIs4iM9IbjfORcd2EL9zvr_T9P7AdWd_T4BJ98Qv7M6tyEoibI2hMfIIHNwCWupNuZNdLN4xF8ZaK7zV1vIOF6TmJzsfUpoz_bduI9z5U3hq6X7ZEBkBLPvYAZVyFRxNkk98JzmBtBRgZ289V9Enl7plQjslrrlmojqIz9R9nLZ-Jn-Ssnd89kyjrnBWIFV9RnLr7_gOCDEq-nSV3gFgIbL0"
-                />
+                <div className="w-full h-full bg-slate-100 animate-pulse"></div>
               )}
             </div>
-            <div className="mt-3 text-center">
-              <span className="font-mono text-[9px] uppercase tracking-widest text-outline font-semibold">
-                Scan to track
-              </span>
+            <div className="mt-2 text-center">
+              <span className="font-mono text-[8px] uppercase tracking-widest text-outline font-bold">Live QR</span>
             </div>
           </div>
 
           {/* Decorative Mesh Grid Element */}
-          <div className="absolute inset-0 -z-10 opacity-40 blur-[80px] bg-primary/20 rounded-full w-full h-full transform scale-150"></div>
+          <div className="absolute inset-0 -z-10 opacity-40 blur-[100px] bg-primary/20 rounded-full w-full h-full scale-[1.3]"></div>
         </div>
       </main>
 
