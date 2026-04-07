@@ -36,6 +36,7 @@ function App() {
       }
 
       setShortUrl(result.data.short_url);
+      setUrl(""); 
     } catch (err: any) {
       setError(err.message);
     } finally {
