@@ -3,9 +3,20 @@ import { FiLink } from "react-icons/fi";
 export function VisualScene() {
   return (
     <div className="hidden md:flex flex-1 relative w-full aspect-square md:aspect-auto items-center justify-center -mt-10 md:mt-0">
-      {/* Sonar Pulse Ring */}
-      <div className="absolute w-80 h-80 rounded-full border-2 border-primary/20 animate-ping opacity-20"></div>
-      <div className="absolute w-[400px] h-[400px] rounded-full border border-primary/10 animate-[pulse_4s_ease-in-out_infinite] opacity-10"></div>
+      
+      {/* 1. Optimized Static Supporting Rings */}
+      <div className="absolute w-[280px] h-[280px] rounded-full border border-primary/10 opacity-40"></div>
+      <div className="absolute w-[360px] h-[360px] rounded-full border border-primary/5 opacity-30"></div>
+      <div className="absolute w-[460px] h-[460px] rounded-full border border-primary/5 opacity-20"></div>
+
+      {/* 2. Gentle Ripple Waves (Smaller & Slower) */}
+      <div className="absolute w-64 h-64 rounded-full border-2 border-primary/15 animate-ripple"></div>
+      <div className="absolute w-64 h-64 rounded-full border-2 border-primary/10 animate-ripple [animation-delay:1.5s]"></div>
+      <div className="absolute w-64 h-64 rounded-full border-2 border-primary/5 animate-ripple [animation-delay:3s]"></div>
+      
+      {/* 3. Deep Background Glow Atmos */}
+      <div className="absolute w-full h-full max-w-[600px] max-h-[600px] rounded-full bg-primary/5 blur-[120px] animate-pulse"></div>
+      <div className="absolute w-[600px] h-[600px] rounded-full border border-primary/5 animate-[pulse_8s_ease-in-out_infinite_-2s] opacity-5"></div>
 
       {/* Main 3D Sphere Container */}
       <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float flex items-center justify-center">
