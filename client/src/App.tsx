@@ -157,13 +157,13 @@ function App() {
             </svg>
 
             {/* Centered Link Icon (Forced Scale) */}
-            <span className="material-symbols-outlined text-surface drop-shadow-2xl z-10 opacity-60 scale-[2.2] lg:scale-[2.8] select-none pointer-events-none" style={{ fontVariationSettings: "'wght' 100" }}>
+            <span className="material-symbols-outlined text-surface drop-shadow-2xl z-10 opacity-50 scale-[2.2] lg:scale-[2.8] select-none pointer-events-none" style={{ fontVariationSettings: "'wght' 100" }}>
               link
             </span>
 
-            {/* Floating Link Created Popup */}
+            {/* Floating Link Created Popup (Shifted further away) */}
             {shortUrl && (
-              <div className="absolute -top-12 -right-12 bg-surface-container-lowest/90 backdrop-blur-xl px-5 py-4 rounded-2xl shadow-[0_24px_48px_rgba(79,70,229,0.15)] border border-white/40 flex flex-col gap-2 z-10 animate-in zoom-in-50 duration-500">
+              <div className="absolute -top-16 -right-24 bg-surface-container-lowest/90 backdrop-blur-xl px-5 py-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.2)] border border-white/40 flex flex-col gap-2 z-20 animate-in zoom-in-50 duration-700 [animation:float_7s_ease-in-out_infinite_-1s]">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                   <span className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant font-bold">Success!</span>
@@ -181,17 +181,30 @@ function App() {
             )}
           </div>
           
-          {/* Floating QR Code (Bottom Left) */}
-          <div className="absolute -bottom-4 left-4 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-[0_24px_48px_rgba(79,70,229,0.1)] z-10 transform -rotate-6 hover:rotate-0 transition-all duration-500 border border-white">
-            <div className="w-16 h-16 lg:w-20 lg:h-20 bg-on-surface/5 rounded-xl flex items-center justify-center overflow-hidden">
-              {shortUrl ? (
-                <img alt="QR" className="w-[85%] h-[85%]" src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${shortUrl}&color=4f46e5`} />
-              ) : (
-                <div className="w-full h-full bg-slate-100 animate-pulse"></div>
-              )}
+          {/* Floating QR Code (Bottom Left - more distance) */}
+          <div className="absolute -bottom-8 -left-12 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] z-20 transform -rotate-12 hover:rotate-0 transition-all duration-700 border border-white animate-[float_8s_ease-in-out_infinite_-3s]">
+            <div className="w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center p-1.5 opacity-90">
+              <svg viewBox="0 0 100 100" className="w-full h-full fill-primary">
+                {/* QR Finder Patterns (The 3 big squares) */}
+                <path d="M0,0 h30 v30 h-30 v-30 z M5,5 v20 h20 v-20 h-20 z M10,10 h10 v10 h-10 v-10 z" />
+                <path d="M70,0 h30 v30 h-30 v-30 z M75,5 v20 h20 v-20 h-20 z M80,10 h10 v10 h-10 v-10 z" />
+                <path d="M0,70 h30 v30 h-30 v-30 z M5,75 v20 h20 v-20 h-20 z M10,80 h10 v10 h-10 v-10 z" />
+                
+                {/* Random Data Blocks (to make it look real but un-scannable) */}
+                <rect x="40" y="0" width="10" height="10" />
+                <rect x="55" y="0" width="10" height="10" />
+                <rect x="40" y="20" width="10" height="10" />
+                <rect x="0" y="40" width="10" height="10" />
+                <rect x="20" y="40" width="10" height="10" />
+                <rect x="50" y="50" width="15" height="15" />
+                <rect x="75" y="45" width="10" height="10" />
+                <rect x="75" y="65" width="10" height="10" />
+                <rect x="50" y="80" width="10" height="10" />
+                <rect x="85" y="85" width="15" height="15" />
+              </svg>
             </div>
             <div className="mt-2 text-center">
-              <span className="font-mono text-[8px] uppercase tracking-widest text-outline font-bold">Live QR</span>
+              <span className="font-mono text-[8px] uppercase tracking-widest text-outline font-bold">QR Code</span>
             </div>
           </div>
 
