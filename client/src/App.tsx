@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FiLink, FiArrowRight, FiCopy, FiCheck } from "react-icons/fi";
 
 function App() {
   const [url, setUrl] = useState("");
@@ -73,15 +74,7 @@ function App() {
               className="flex flex-col sm:flex-row items-center bg-surface-container-lowest sm:rounded-full rounded-2xl p-2 shadow-[0_8px_32px_rgba(79,70,229,0.08)] focus-within:ring-2 focus-within:ring-primary/40 transition-all duration-300 gap-2 sm:gap-0"
             >
               <div className="hidden sm:block pl-4 pr-3 text-outline">
-                <span
-                  className="material-symbols-outlined shrink-0"
-                  style={{
-                    fontVariationSettings:
-                      "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-                  }}
-                >
-                  link
-                </span>
+                <FiLink className="w-6 h-6 shrink-0" />
               </div>
               <input
                 className="flex-1 w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline/60 font-medium px-4 sm:px-2 py-3 sm:py-2 outline-none"
@@ -97,17 +90,7 @@ function App() {
                 className="w-full sm:w-auto bg-gradient-to-br from-primary to-[#3430a3] text-on-primary px-8 py-3 rounded-xl sm:rounded-full font-bold flex items-center justify-center gap-2 active:scale-95 transition-all duration-150 shadow-lg shadow-primary/20 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? "Wait..." : "Shorten"}
-                {!isLoading && (
-                  <span
-                    className="material-symbols-outlined"
-                    style={{
-                      fontVariationSettings:
-                        "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-                    }}
-                  >
-                    arrow_forward
-                  </span>
-                )}
+                {!isLoading && <FiArrowRight className="w-5 h-5" />}
               </button>
             </form>
             {error && (
@@ -117,7 +100,7 @@ function App() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 pt-2  ">
+          <div className="flex items-center gap-2 pt-2">
             <div className="w-2 h-2 rounded-full bg-primary/40 animate-pulse"></div>
             <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-bold leading-relaxed whitespace-nowrap">
               Zero registration. <span className="text-primary/40 mx-1">/</span> Instant shortening. <span className="text-primary/40 mx-1">/</span> Permanent link access.
@@ -156,14 +139,14 @@ function App() {
               <circle cx="100" cy="100" r="90" fill="url(#surfaceGlow)" />
             </svg>
 
-            {/* Centered Link Icon (Forced Scale) */}
-            <span className="material-symbols-outlined text-surface drop-shadow-2xl z-10 opacity-50 scale-[2.2] lg:scale-[2.8] select-none pointer-events-none" style={{ fontVariationSettings: "'wght' 100" }}>
-              link
-            </span>
+            {/* Centered Link Icon (via react-icons — no FOUT) */}
+            <div className="text-white/40 drop-shadow-2xl z-10 select-none pointer-events-none scale-[4] lg:scale-[5]">
+               <FiLink strokeWidth={1} />
+            </div>
 
             {/* Floating Link Created Popup (Shifted further away) */}
             {shortUrl && (
-              <div className="absolute -top-16 -right-24 bg-surface-container-lowest/90 backdrop-blur-xl px-5 py-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.2)] border border-white/40 flex flex-col gap-2 z-20 animate-in zoom-in-50 duration-700 [animation:float_7s_ease-in-out_infinite_-1s]">
+              <div className="absolute -top-16 -right-24 bg-surface-container-lowest/90 backdrop-blur-xl px-5 py-4 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.2)] border border-white/40 flex flex-col gap-2 z-20 animate-in zoom-in-50 duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                   <span className="font-mono text-[9px] uppercase tracking-widest text-on-surface-variant font-bold">Success!</span>
@@ -174,7 +157,7 @@ function App() {
                     className={`p-1.5 rounded-md transition-all ${isCopied ? 'bg-green-100 text-green-600' : 'bg-white text-outline hover:text-primary'}`} 
                     onClick={copyToClipboard}
                   >
-                    <span className="material-symbols-outlined text-xs">{isCopied ? 'check' : 'content_copy'}</span>
+                    {isCopied ? <FiCheck className="w-3.5 h-3.5" /> : <FiCopy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
               </div>
