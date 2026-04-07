@@ -79,7 +79,7 @@ export function SuccessCard({
         {/* Right QR Visualization Area */}
         <div className="shrink-0 flex items-center justify-center hidden sm:flex">
           <div
-            className="p-1.5 rounded-xl bg-white border-2 border-emerald-100 shadow-sm transition-transform hover:scale-110 duration-300"
+            className="p-1.5 rounded-xl bg-white border-2 border-emerald-100 shadow-sm animate-in zoom-in-75 duration-700 delay-300 fill-mode-both"
             ref={qrRef}
           >
             <QRCodeCanvas 
