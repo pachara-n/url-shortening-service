@@ -244,6 +244,12 @@ app.get("/:code", async (req: Request, res: Response): Promise<any> => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// สำหรับ Vercel Serverless Functions จะต้อง Export app ออกไป
+// แต่ถ้าเราอยากรันในเครื่องตัวเอง (Local) เราจะใช้เงื่อนไขตรวจสอบว่าเราไม่ได้รันบน Vercel
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`[LOCAL] Server running at http://localhost:${port}`);
+  });
+}
+
+export default app;
