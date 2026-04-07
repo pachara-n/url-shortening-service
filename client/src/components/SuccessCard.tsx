@@ -8,7 +8,7 @@ interface SuccessCardProps {
 
 export function SuccessCard({ shortUrl, copyToClipboard, isCopied }: SuccessCardProps) {
   return (
-    <div className="mt-8 bg-white/40 backdrop-blur-2xl px-6 py-5 rounded-3xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] border border-white/60 flex flex-col gap-4 animate-in slide-in-from-top-4 fade-in duration-500 relative overflow-hidden group">
+    <div className="mt-8 bg-white/40 backdrop-blur-2xl px-6 py-5 rounded-3xl shadow-[0_32px_64px_rgba(5,150,105,0.15)] border border-white/60 flex flex-col gap-4 animate-in slide-in-from-top-4 fade-in duration-500 relative overflow-hidden group">
       {/* Decorative Shine Effect */}
       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
       
@@ -25,7 +25,7 @@ export function SuccessCard({ shortUrl, copyToClipboard, isCopied }: SuccessCard
         </div>
         <button 
           onClick={copyToClipboard}
-          className={`w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${isCopied ? 'bg-green-100 text-green-700' : 'bg-primary text-on-primary hover:bg-[#3430a3]'}`}
+          className={`w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${isCopied ? 'bg-green-100 text-green-700' : 'bg-primary text-on-primary hover:bg-[#064e3b]'}`}
         >
           {isCopied ? <FiCheck className="w-4 h-4" /> : <FiCopy className="w-4 h-4" />}
           {isCopied ? 'Copied' : 'Copy'}

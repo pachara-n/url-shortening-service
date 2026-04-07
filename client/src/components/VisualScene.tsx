@@ -27,13 +27,13 @@ export function VisualScene() {
       <div className="relative w-72 h-72 lg:w-80 lg:h-80 animate-float flex items-center justify-center">
         <svg
           viewBox="0 0 200 200"
-          className="absolute inset-0 w-full h-full drop-shadow-[0_32px_64px_rgba(79,70,229,0.4)]"
+          className="absolute inset-0 w-full h-full drop-shadow-[0_32px_64px_rgba(5,150,105,0.4)]"
         >
           <defs>
             <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
-              <stop offset="0%" stopColor="#818CF8" />
-              <stop offset="40%" stopColor="#4F46E5" />
-              <stop offset="100%" stopColor="#1E1B4B" />
+              <stop offset="0%" stopColor="#34D399" />
+              <stop offset="40%" stopColor="#059669" />
+              <stop offset="100%" stopColor="#064E3B" />
             </radialGradient>
             <radialGradient id="surfaceGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="white" stopOpacity="0.4" />
@@ -89,7 +89,7 @@ export function VisualScene() {
         </div>
 
         {/* Permanent Floating Mockup Card (Top Left - Flipped Rotation) */}
-        <div className="absolute -top-12 -left-16 bg-white/90 backdrop-blur-xl px-4 py-3 rounded-2xl shadow-[0_32px_64px_rgba(79,70,229,0.15)] border border-white flex flex-col gap-2 z-20 transform -rotate-6 hover:rotate-0 transition-all duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
+        <div className="absolute -top-12 -left-16 bg-white/90 backdrop-blur-xl px-4 py-3 rounded-2xl shadow-[0_32px_64px_rgba(5,150,105,0.15)] border border-white flex flex-col gap-2 z-20 transform -rotate-6 hover:rotate-0 transition-all duration-700 animate-[float_7s_ease-in-out_infinite_-1s]">
           <div className="flex items-center gap-2">
             <div className="flex bg-primary/10 text-primary p-1 rounded-md">
               <FiLink className="w-3 h-3" strokeWidth={3} />

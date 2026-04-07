@@ -4,16 +4,16 @@
   --font-sans: "Inter", sans-serif;
   --font-mono: "ui-monospace", "JetBrains Mono", monospace;
 
-  /* สียกมาจาก Design System ของ Stitch (คัดมาเฉพาะตัวที่ App.tsx เรียกใช้จริง) */
-  --color-surface: #f8f9ff;
-  --color-on-surface: #1b1b1f;
-  --color-on-surface-variant: #46464f;
+  /* Midnight Emerald Palette */
+  --color-surface: #f0fdf4;
+  --color-on-surface: #064e3b;
+  --color-on-surface-variant: #14532d;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f4f3fa;
-  --color-primary: #4f46e5;
+  --color-surface-container-low: #dcfce7;
+  --color-primary: #059669;
   --color-on-primary: #ffffff;
-  --color-outline: #777680;
-  --color-outline-variant: #c7c5d0;
+  --color-outline: #3f6212;
+  --color-outline-variant: #bbf7d0;
   --color-error: #ba1a1a;
   --color-error-container: #ffdad6;
 }
@@ -29,8 +29,8 @@
 
   .grid-bg {
     background-image:
-      linear-gradient(to right, rgba(79, 70, 229, 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(79, 70, 229, 0.08) 1px, transparent 1px);
+      linear-gradient(to right, rgba(5, 150, 105, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(5, 150, 105, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
