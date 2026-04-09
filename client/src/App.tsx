@@ -15,7 +15,9 @@ function App() {
   const validateUrl = (string: string) => {
     try {
       const newUrl = new URL(string);
-      return newUrl.protocol === "http:" || newUrl.protocol === "https:";
+      const isHttp = newUrl.protocol === "http:" || newUrl.protocol === "https:";
+      const hasDotInHost = newUrl.hostname.includes(".");
+      return isHttp && hasDotInHost;
     } catch (_) {
       return false;
     }
@@ -33,9 +35,15 @@ function App() {
       return;
     }
 
-    if (!validateUrl(url)) {
+    // Auto-prepend https:// if protocol is missing
+    let finalUrl = url;
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      finalUrl = "https://" + url;
+    }
+
+    if (!validateUrl(finalUrl)) {
       setIsValid(false);
-      setError("Please enter a valid URL (including https://)");
+      setError("Please enter a valid URL");
       return;
     }
 
@@ -48,7 +56,7 @@ function App() {
       const response = await fetch(`${baseUrl}/api/shorten`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url: finalUrl }),
       });
 
       const result = await response.json();
@@ -87,12 +95,14 @@ function App() {
             <form
               onSubmit={handleShorten}
               className={`flex flex-col sm:flex-row items-center bg-surface-container-lowest sm:rounded-full rounded-2xl p-2 shadow-[0_8px_32px_rgba(79,70,229,0.06)] border transition-all duration-300 gap-2 ${
-                !isValid 
-                  ? "border-red-400 ring-4 ring-red-400/10" 
+                !isValid
+                  ? "border-red-400 ring-4 ring-red-400/10"
                   : "border-outline-variant/30 focus-within:ring-2 focus-within:ring-primary/30"
               }`}
             >
-              <div className={`hidden sm:block pl-4 ${!isValid ? "text-red-400" : "text-outline/60"}`}>
+              <div
+                className={`hidden sm:block pl-4 ${!isValid ? "text-red-400" : "text-outline/60"}`}
+              >
                 <FiLink className="w-5 h-5" />
               </div>
               <input
@@ -136,7 +146,10 @@ function App() {
           <div className="flex items-center gap-2 pt-2">
             <div className="w-2 h-2 rounded-full bg-primary/40 animate-pulse"></div>
             <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-on-surface-variant font-bold leading-relaxed whitespace-nowrap">
-              Zero registration. <span className="text-primary/40 mx-1">/</span> Instant shortening. <span className="text-primary/40 mx-1">/</span> Permanent link access.
+              Zero registration. <span className="text-primary/40 mx-1">/</span>{" "}
+              Instant shortening.{" "}
+              <span className="text-primary/40 mx-1">/</span> Permanent link
+              access.
             </p>
           </div>
         </div>
