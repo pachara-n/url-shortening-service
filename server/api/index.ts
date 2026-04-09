@@ -3,29 +3,44 @@ import cors from "cors";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import { supabase } from "./supabase.js";
-
+import { rateLimit } from "express-rate-limit";
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const port = process.env.PORT || 8000;
 
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  "http://localhost:5173", 
+  "http://localhost:5173",
 ].filter(Boolean) as string[];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.includes("*")) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  ipv6Subnet: 56,
+  message: { error: "Too many requests, please try again later." },
+});
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (
+        allowedOrigins.indexOf(origin) !== -1 ||
+        allowedOrigins.includes("*")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  }),
+);
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
@@ -38,17 +53,17 @@ app.get("/test-db", async (req: Request, res: Response) => {
   try {
     // ดึง 1 แถวเพื่อเช็คสิทธิ์ RLS และความถูกต้องของ API Key แบบประหยัดที่สุด
     const { data, error } = await supabase.from("urls").select("*").limit(1);
-    
+
     if (error) throw error;
-    
+
     res.json({
       message: "Database connection successful!",
-      data: data
+      data: data,
     });
   } catch (error: any) {
     res.status(500).json({
       message: "Database connection failed!",
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -57,7 +72,7 @@ const generateShortCode = () => {
   return crypto.randomBytes(4).toString("base64url");
 };
 
-app.post("/api/shorten", async (req: Request, res: Response): Promise<any> => {
+app.post("/api/shorten", limiter, async (req: Request, res: Response): Promise<any> => {
   try {
     const { url } = req.body;
 
@@ -86,7 +101,7 @@ app.post("/api/shorten", async (req: Request, res: Response): Promise<any> => {
 
       if (error) {
         // 23505 คือ Error Code ของ Postgres เมื่อข้อมูลละเมิดกฎ Unique (มีรหัสนี้แล้ว)
-        if (error.code === '23505') {
+        if (error.code === "23505") {
           attempts++;
           shortCode = generateShortCode();
         } else {
@@ -94,7 +109,7 @@ app.post("/api/shorten", async (req: Request, res: Response): Promise<any> => {
         }
       } else {
         isUnique = true;
-        
+
         const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
         const shortUrl = `${baseUrl}/${data.short_code}`;
 
@@ -102,16 +117,18 @@ app.post("/api/shorten", async (req: Request, res: Response): Promise<any> => {
           message: "URL shortened successfully",
           data: {
             ...data,
-            short_url: shortUrl
-          }
+            short_url: shortUrl,
+          },
         });
       }
     }
 
     if (!isUnique) {
-       return res.status(500).json({ error: "Failed to generate a unique short code after multiple attempts. Please try again." });
+      return res.status(500).json({
+        error:
+          "Failed to generate a unique short code after multiple attempts. Please try again.",
+      });
     }
-
   } catch (error: any) {
     console.error("Error creating short URL:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -167,44 +184,51 @@ app.put("/shorten/:code", async (req: Request, res: Response): Promise<any> => {
   }
 });
 
-app.delete("/shorten/:code", async (req: Request, res: Response): Promise<any> => {
-  try {
-    const { code } = req.params;
+app.delete(
+  "/shorten/:code",
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const { code } = req.params;
 
-    const { error, count } = await supabase
-      .from("urls")
-      .delete({ count: "exact" })
-      .eq("short_code", code);
+      const { error, count } = await supabase
+        .from("urls")
+        .delete({ count: "exact" })
+        .eq("short_code", code);
 
-    if (error) throw error;
-    if (count === 0) return res.status(404).json({ error: "Short URL not found" });
+      if (error) throw error;
+      if (count === 0)
+        return res.status(404).json({ error: "Short URL not found" });
 
-    // 204 No Content คือมาตรฐาน REST สำหรับการลบสำเร็จ ไม่ต้องส่ง body กลับ
-    return res.status(204).send();
-  } catch (error: any) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-app.get("/shorten/:code/stats", async (req: Request, res: Response): Promise<any> => {
-  try {
-    const { code } = req.params;
-
-    const { data, error } = await supabase
-      .from("urls")
-      .select("short_code, clicks, last_visited, created_at")
-      .eq("short_code", code)
-      .single();
-
-    if (error || !data) {
-      return res.status(404).json({ error: "Short URL not found" });
+      // 204 No Content คือมาตรฐาน REST สำหรับการลบสำเร็จ ไม่ต้องส่ง body กลับ
+      return res.status(204).send();
+    } catch (error: any) {
+      res.status(500).json({ error: "Internal server error" });
     }
+  },
+);
 
-    return res.status(200).json({ data });
-  } catch (error: any) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+app.get(
+  "/shorten/:code/stats",
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const { code } = req.params;
+
+      const { data, error } = await supabase
+        .from("urls")
+        .select("short_code, clicks, last_visited, created_at")
+        .eq("short_code", code)
+        .single();
+
+      if (error || !data) {
+        return res.status(404).json({ error: "Short URL not found" });
+      }
+
+      return res.status(200).json({ data });
+    } catch (error: any) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  },
+);
 
 // Redirect route ต้องอยู่ล่างสุดเสมอ เพราะ /:code จะ match ทุก path ที่ไม่มี prefix
 app.get("/:code", async (req: Request, res: Response): Promise<any> => {
@@ -227,17 +251,16 @@ app.get("/:code", async (req: Request, res: Response): Promise<any> => {
     // อัปเดต Stats แบบ Fire-and-forget (ไม่ใส่ await) เพื่อไม่ให้ User ต้องรอจังหวะเด้งหน้าเว็บ
     supabase
       .from("urls")
-      .update({ 
+      .update({
         clicks: data.clicks + 1,
-        last_visited: new Date().toISOString()
+        last_visited: new Date().toISOString(),
       })
       .eq("short_code", code)
       .then(({ error: updateError }) => {
-          if(updateError) console.error("Failed to update stats:", updateError);
+        if (updateError) console.error("Failed to update stats:", updateError);
       });
 
     res.redirect(data.original_url);
-
   } catch (error: any) {
     console.error("Error redirecting:", error);
     res.status(500).json({ error: "Internal server error" });
