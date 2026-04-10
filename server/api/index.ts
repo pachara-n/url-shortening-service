@@ -7,7 +7,7 @@ import { rateLimit } from "express-rate-limit";
 dotenv.config();
 
 const app = express();
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 const port = process.env.PORT || 8000;
 
 const allowedOrigins = [
@@ -72,68 +72,77 @@ const generateShortCode = () => {
   return crypto.randomBytes(4).toString("base64url");
 };
 
-app.post("/api/shorten", limiter, async (req: Request, res: Response): Promise<any> => {
-  try {
-    const { url } = req.body;
-
-    if (!url) {
-      return res.status(400).json({ error: "URL is required" });
-    }
-
-    // Basic URL validation
+app.post(
+  "/api/shorten",
+  limiter,
+  async (req: Request, res: Response): Promise<any> => {
     try {
-      new URL(url);
-    } catch (_) {
-      return res.status(400).json({ error: "Invalid URL format" });
-    }
+      const { url } = req.body;
 
-    let shortCode = generateShortCode();
-    let isUnique = false;
-    let attempts = 0;
+      if (!url) {
+        return res.status(400).json({ error: "URL is required" });
+      }
 
-    // ระบบป้องกัน Collision: ยอมให้ลองสุ่มใหม่ได้ 3 ครั้งถ้าบังเอิญรหัสซ้ำจริงๆ
-    while (!isUnique && attempts < 3) {
-      const { data, error } = await supabase
-        .from("urls")
-        .insert([{ short_code: shortCode, original_url: url }])
-        .select()
-        .single();
-
-      if (error) {
-        // 23505 คือ Error Code ของ Postgres เมื่อข้อมูลละเมิดกฎ Unique (มีรหัสนี้แล้ว)
-        if (error.code === "23505") {
-          attempts++;
-          shortCode = generateShortCode();
-        } else {
-          throw error;
+      try {
+        const newUrl = new URL(url);
+        const isHttp =
+          newUrl.protocol === "http:" || newUrl.protocol === "https:";
+        const hasDotInHost = newUrl.hostname.includes(".");
+        if (!isHttp || !hasDotInHost) {
+          throw new Error();
         }
-      } else {
-        isUnique = true;
+      } catch (_) {
+        return res.status(400).json({ error: "Invalid URL format" });
+      }
 
-        const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
-        const shortUrl = `${baseUrl}/${data.short_code}`;
+      let shortCode = generateShortCode();
+      let isUnique = false;
+      let attempts = 0;
 
-        return res.status(201).json({
-          message: "URL shortened successfully",
-          data: {
-            ...data,
-            short_url: shortUrl,
-          },
+      // ระบบป้องกัน Collision: ยอมให้ลองสุ่มใหม่ได้ 3 ครั้งถ้าบังเอิญรหัสซ้ำจริงๆ
+      while (!isUnique && attempts < 3) {
+        const { data, error } = await supabase
+          .from("urls")
+          .insert([{ short_code: shortCode, original_url: url }])
+          .select()
+          .single();
+
+        if (error) {
+          // 23505 คือ Error Code ของ Postgres เมื่อข้อมูลละเมิดกฎ Unique (มีรหัสนี้แล้ว)
+          if (error.code === "23505") {
+            attempts++;
+            shortCode = generateShortCode();
+          } else {
+            throw error;
+          }
+        } else {
+          isUnique = true;
+
+          const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
+          const shortUrl = `${baseUrl}/${data.short_code}`;
+
+          return res.status(201).json({
+            message: "URL shortened successfully",
+            data: {
+              ...data,
+              short_url: shortUrl,
+            },
+          });
+        }
+      }
+
+      if (!isUnique) {
+        return res.status(500).json({
+          error:
+            "Failed to generate a unique short code after multiple attempts. Please try again.",
         });
       }
+    } catch (error: any) {
+      console.error("Error creating short URL:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-
-    if (!isUnique) {
-      return res.status(500).json({
-        error:
-          "Failed to generate a unique short code after multiple attempts. Please try again.",
-      });
-    }
-  } catch (error: any) {
-    console.error("Error creating short URL:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+  },
+);
 
 app.get("/shorten/:code", async (req: Request, res: Response): Promise<any> => {
   try {
