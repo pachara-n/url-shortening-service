@@ -257,7 +257,26 @@ app.get("/:code", async (req: Request, res: Response): Promise<any> => {
       return res.status(404).json({ error: "Short URL not found" });
     }
 
-    // อัปเดต Stats แบบ Fire-and-forget (ไม่ใส่ await) เพื่อไม่ให้ User ต้องรอจังหวะเด้งหน้าเว็บ
+    // ดึงข้อมูลจาก Header ที่ Vercel และ Browser ส่งมาให้
+    const ip = (req.headers["x-forwarded-for"] as string)?.split(",")[0] || req.ip;
+    const country = (req.headers["x-vercel-ip-country"] as string) || "Unknown";
+    const userAgent = req.headers["user-agent"] || "Unknown";
+
+    supabase
+      .from("click_logs")
+      .insert([
+        {
+          short_code: code,
+          ip_address: ip,
+          country: country,
+          user_agent: userAgent,
+        },
+      ])
+      .then(({ error: logError }) => {
+        if (logError) console.error("Failed to save click log:", logError);
+      });
+
+    // อัปเดต Stats รวมแบบเดิม (เพื่อความเร็วในการดึงเลขรวม)
     supabase
       .from("urls")
       .update({
