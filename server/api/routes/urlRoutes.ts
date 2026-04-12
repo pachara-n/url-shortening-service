@@ -25,7 +25,7 @@ router.get("/", handleHome);
 
 router.get("/test-db", testDbConnection);
 
-router.post("/api/shorten", limiter, createShortUrl);
+router.post("/shorten", limiter, createShortUrl);
 
 router.get("/shorten/:code", getUrlDetails);
 

@@ -53,7 +53,7 @@ function App() {
     try {
       const baseUrl =
         import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-      const response = await fetch(`${baseUrl}/api/shorten`, {
+      const response = await fetch(`${baseUrl}/shorten`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: finalUrl }),
