@@ -222,3 +222,19 @@ export const testDbConnection = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getAnalyticsDetail = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    const { data, error } = await supabase
+      .from("click_logs")
+      .select("short_code, ip_address, country, user_agent, created_at ")
+      .eq("short_code", code)
+    if (error || !data) {
+      return res.status(404).json({ error: "URL Not Found" });
+    }
+    return res.status(200).json({ data });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};

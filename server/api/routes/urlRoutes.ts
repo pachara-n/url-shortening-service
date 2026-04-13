@@ -7,6 +7,7 @@ import {
   redirectToOriginalUrl,
   handleHome,
   testDbConnection,
+  getAnalyticsDetail,
 } from "../controllers/urlController.js";
 import rateLimit from "express-rate-limit";
 
@@ -32,6 +33,8 @@ router.get("/shorten/:code", getUrlDetails);
 router.put("/shorten/:code", updateShortUrl);
 
 router.delete("/shorten/:code", deleteShortUrl);
+
+router.get("/analytics/:code", getAnalyticsDetail);
 
 // Redirect route ต้องอยู่ล่างสุดเสมอ เพราะ /:code จะ match ทุก path ที่ไม่มี prefix
 router.get("/:code", redirectToOriginalUrl);
